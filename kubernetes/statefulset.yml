@@ -1,0 +1,20 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tfe-docker-agent
+  namespace: pipelines
+spec:
+  replicas: 2
+  serviceName: tfe-docker-agent
+  template:
+    metadata:
+    spec:
+      containers:
+        - envFrom:
+            - secretRef:
+                name: tfe-agent-secrets
+                optional: false
+          image: docker.io/hashicorp/tfc-agent:1.14.1
+          imagePullPolicy: Always
+          name: tfe-docker-agent
